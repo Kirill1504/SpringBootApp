@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Edit User</h1>
+    <form th:action="@{/admin/edit}" th:object="${user}" method="post">
+        <p><input th:type="hidden" th:field="*{id}"/></p>
+        <p>name: <input type="text" th:field="*{name}"/></p>
+        <p>surname: <input type="text" th:field="*{surname}"/></p>
+        <p>age: <input type="number" th:field="*{age}"/></p>
+        <p>username: <input type="text" th:field="*{username}"/></p>
+        <p>password: <input type="text" th:field="*{password}"/></p>
+        <p>
+            <label>Role:</label><br>
+            <input type="checkbox" name="roleAdmin" value="ROLE_ADMIN">admin<br>
+            <input type="checkbox" name="roleUser" value="ROLE_USER">user<br>
+        </p>
+        <p><input type="submit" value="Edit User"/></p>
+    </form>
+    <a th:href="@{/admin/users}">Return</a>
+    <a th:href="@{/logout}">LOGOUT</a>
+
+</body>
+</html>
