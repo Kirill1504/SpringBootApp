@@ -5,6 +5,8 @@ import com.example.SpringBootApp.model.User;
 import com.example.SpringBootApp.service.RoleService;
 import com.example.SpringBootApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,9 @@ public class AdminController {
     @GetMapping(value = {"/users", "/"})
     public String printUsers(Model model) {
         List<User> userList = userService.listUsers();
+        User user = userService.fingByUserName(getCurrentUsername());
+        model.addAttribute("roles", user.getRolesStr());
+        model.addAttribute("user", user);
         model.addAttribute("users", userList);
         return "users";
     }
@@ -88,4 +93,10 @@ public class AdminController {
 
         return "redirect:/admin/users";
     }
+
+    public String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
 }
+

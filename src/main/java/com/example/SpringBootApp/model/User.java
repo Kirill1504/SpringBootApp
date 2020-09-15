@@ -153,6 +153,16 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+    public String getRolesStr() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Role role:getRoles()) {
+            sb.append(role.getRole());
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         return "User{" +

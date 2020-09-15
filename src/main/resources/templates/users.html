@@ -2,10 +2,25 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
     <title>USERS</title>
 </head>
 <body>
-<table border="1px" cellpadding="2" cellspacing="">
+<nav class="navbar navbar-dark bg-dark shadow mb-2">
+    <div th:object="${user}">
+        <a class="navbar-text text-white font-weight-bold" th:text="${user.username}"> </a>
+        <a class="navbar-text text-white"
+           th:text="' with roles : ' + ${roles}"></a>
+    </div>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+<table class="table">
+    <h1>All users</h1>
     <thead>
     <tr>
         <th>id</th>
@@ -14,9 +29,9 @@
         <th>age</th>
         <th>username</th>
         <th>password</th>
-        <th>edit/delete</th>
-        <th>role1</th>
-        <th>role2</th>
+        <th>roles</th>
+        <th>edit</th>
+        <th>delete</th>
     </tr>
     </thead>
     <tbody>
@@ -28,17 +43,19 @@
         <td th:text="${user.age}">age</td>
         <td th:text="${user.username}">username</td>
         <td th:text="${user.password}">password</td>
+        <td th:text="${user.getRolesStr()}"></td>
         <td>
-            <a th:href="@{'/admin/edit/' + ${user.id}}">edit</a>
-            <a th:href="@{'/admin/delete/' + ${user.id}}">delete</a>
+            <a th:href="@{'/admin/edit/' + ${user.id}}" class="btn btn-info">edit</a>
         </td>
-        <td
-            th:each="role: ${user.getRoles()}" th:text="${role.getRole()}"
-        ></td>
+        <td>
+            <a th:href="@{'/admin/delete/' + ${user.id}}" class="btn btn-danger">delete</a>
+        </td>
     </tr>
     </tbody>
 </table>
 <a th:href="@{/admin/addUser}">Add User</a>
 <a th:href="@{/logout}">LOGOUT</a>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
 </body>
 </html>
