@@ -40,13 +40,6 @@ public class AdminController {
         return "users";
     }
 
-    @GetMapping("/addUser")
-    public String addUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "addUser";
-    }
-
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("user") User user,
                           @RequestParam(value = "roleAdmin", required = false) String roleAdmin,
@@ -63,23 +56,13 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/edit")
-    public String editUser(@RequestParam("id") Long id, Model model) {
-        User user = userService.getById(id);
-        Set<String> roles = new HashSet<>();
-        user.getRoles().forEach(e -> roles.add(e.getRole()));
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
-        return "editUser";
-    }
-
     @PostMapping("/update")
     public String editUser(@ModelAttribute("user") User user,
                            HttpServletRequest request) {
 
         Set<Role> roles = user.getRoles();
-        String roleUser = request.getParameter("user");
-        String roleAdmin = request.getParameter("admin");
+        String roleUser = request.getParameter("ROLE_USER");
+        String roleAdmin = request.getParameter("ROLE_ADMIN");
         if (roleAdmin != null) {
             roles.add(roleService.findRoleByRoleName(roleAdmin));
         }
