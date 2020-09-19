@@ -22,6 +22,7 @@ public class UserController {
     @GetMapping("/user")
     public String printUser(Model model) {
         User user = userService.fingByUserName(getCurrentUsername());
+        model.addAttribute("roles", user.getRolesStr());
         model.addAttribute("user", user);
         return "user";
     }

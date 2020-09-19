@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,8 @@ public class AdminController {
         model.addAttribute("roles", user.getRolesStr());
         model.addAttribute("user", user);
         model.addAttribute("users", userList);
+        User newUser = new User();
+        model.addAttribute("newUser", newUser);
         return "users";
     }
 
@@ -60,8 +63,8 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/edit")
+    public String editUser(@RequestParam("id") Long id, Model model) {
         User user = userService.getById(id);
         Set<String> roles = new HashSet<>();
         user.getRoles().forEach(e -> roles.add(e.getRole()));
@@ -70,12 +73,13 @@ public class AdminController {
         return "editUser";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/update")
     public String editUser(@ModelAttribute("user") User user,
-                           @RequestParam(value = "roleAdmin", required = false) String roleAdmin,
-                           @RequestParam(value = "roleUser", required = false) String roleUser) {
+                           HttpServletRequest request) {
 
-        Set<Role> roles = new HashSet<>();
+        Set<Role> roles = user.getRoles();
+        String roleUser = request.getParameter("user");
+        String roleAdmin = request.getParameter("admin");
         if (roleAdmin != null) {
             roles.add(roleService.findRoleByRoleName(roleAdmin));
         }
@@ -87,8 +91,8 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id){
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam("id") Long id){
         userService.delete(userService.getById(id));
 
         return "redirect:/admin/users";
